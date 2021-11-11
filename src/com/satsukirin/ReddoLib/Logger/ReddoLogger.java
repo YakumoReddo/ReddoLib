@@ -19,7 +19,9 @@ public class ReddoLogger {
 	private List<Player> loggedPlayer;
 	public ReddoLogger() {
 		instance=this;
+		//get spigot loader
 		logger = PluginMain.getInstance().getLogger();
+		//create player list who will receive logs
 		loggedPlayer=new ArrayList<Player>();
 	}
 	public static ReddoLogger getInstance() {

@@ -12,6 +12,7 @@ public class PluginMain extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		PluginMain.instance=this;
+		//Create Logger
 		logger=new ReddoLogger();
 		
 	}
