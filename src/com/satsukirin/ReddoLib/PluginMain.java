@@ -2,6 +2,8 @@ package com.satsukirin.ReddoLib;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.satsukirin.ReddoLib.Command.ReddoLibCommands;
+import com.satsukirin.ReddoLib.Items.ItemManager;
 import com.satsukirin.ReddoLib.Logger.ReddoLogger;
 
 public class PluginMain extends JavaPlugin {
@@ -14,6 +16,10 @@ public class PluginMain extends JavaPlugin {
 		PluginMain.instance=this;
 		//Create Logger
 		logger=new ReddoLogger();
+		//create command executor
+		ReddoLibCommands rlc = new ReddoLibCommands();
+		this.getCommand("rl").setExecutor(rlc);
+		this.getCommand("reddolib").setExecutor(rlc);
 		
 	}
 	
@@ -22,5 +28,8 @@ public class PluginMain extends JavaPlugin {
 	}
 	public static PluginMain getInstance() {
 		return instance;
+	}
+	public static ItemManager getItemManager() {
+		return ItemManager.getInstance();
 	}
 }

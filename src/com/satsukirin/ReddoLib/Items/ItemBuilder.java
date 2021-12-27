@@ -1,118 +1,114 @@
 package com.satsukirin.ReddoLib.Items;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
+
+import com.satsukirin.ReddoLib.PluginMain;
+
 
 //this is a custom item class
 public class ItemBuilder {
-	//item inPlugin id
+	//item id default "UnnamedItem%s"%HHmmss(Time)
 	private String id;
-	//item name show on inventory
+	//item name in display default same to id
 	private String name;
-	//item material
+	//item material default grassblock
 	private Material material;
-	//item lore
-	private List<String> lore;
-	//item nbts
-	private Map<String,String> nodeMap;
-	//item classification
-	private String classStr;
-	//item 
+	//item lores default empty(not null)
+	private List<String> lores;
+	//item data default empty(not null)
+	private Map<String, Map<String, String> > data;
+	//if item changed simply after the last rebuild
+	private boolean changed;
+	
+	//itemstack instance
+	private ItemStack tempitem;
+	
+	//default item builder, generate a default item
+	public ItemBuilder() {
+		id="UnnamedItem"+(new SimpleDateFormat("HHmmss")).format(new Date());
+		name=id;
+		material = Material.GRASS_BLOCK;
+		lores=new ArrayList<String>();
+		data=new HashMap<String, Map<String,String>>();
+		changed=true;
+	}
+	
 	public ItemBuilder(ConfigurationSection section) {
-		id = section.getName();
-		if(section.contains("id")) {
-			
-			name = section.getString("name");
-		}
-		material = Material.valueOf(section.getString("material"));
-		if(section.contains("lore")) {
-			lore=section.getStringList("lore");
-		}
 		
-		if(section.contains("tag")) {
-			ConfigurationSection tagsec = section.getConfigurationSection("tag");
-			nodeMap = new HashMap<String, String>();
-			for(Entry<String, Object> ent : tagsec.getValues(false).entrySet()) {
-				nodeMap.put(ent.getKey(),(String)ent.getValue());
+	}
+	
+	//rebuild itemstack instance into tempitem
+	private void rebuildItem() {
+		tempitem = new ItemStack(material);
+		ItemMeta meta = tempitem.getItemMeta();
+		meta.setDisplayName(name);
+		meta.setLore(lores);
+		//create data pdc to storage extend pdc
+		PersistentDataContainer pdcdata = meta.getPersistentDataContainer().getAdapterContext().newPersistentDataContainer();
+		for(String key : data.keySet()) {
+			//get all data in map
+			Map<String, String> tmap = data.get(key);
+			//create extend pdc
+			PersistentDataContainer pdc = meta.getPersistentDataContainer().getAdapterContext().newPersistentDataContainer();
+			for(Entry<String, String> ess : tmap.entrySet()) {
+				pdc.set(new NamespacedKey(PluginMain.getInstance(), ess.getKey()), PersistentDataType.STRING, ess.getValue());
 			}
+			pdcdata.set(new NamespacedKey(PluginMain.getInstance(), key),PersistentDataType.TAG_CONTAINER,pdc);
 			
 		}
-		if(section.contains("class")) {
-			classStr=section.getString("class");
-		}else {
-			classStr="Default";
+		meta.getPersistentDataContainer().set(new NamespacedKey(PluginMain.getInstance(), "data"), PersistentDataType.TAG_CONTAINER, null);
+		tempitem.setItemMeta(meta);
+		changed=false;
+	}
+	
+	//get item
+	public ItemStack getItem() {
+		if(changed) {
+			rebuildItem();
 		}
-		
+		return tempitem.clone();
 	}
 	public String getId() {
 		return id;
 	}
 	public void setId(String id) {
+		changed=true;
 		this.id = id;
 	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
+		changed=true;
 		this.name = name;
 	}
 	public Material getMaterial() {
 		return material;
 	}
 	public void setMaterial(Material material) {
+		changed=true;
 		this.material = material;
 	}
-	public List<String> getLore() {
-		return lore;
+	public List<String> getLores() {
+		return lores;
 	}
-	public void setLore(List<String> lore) {
-		this.lore = lore;
+	public Map<String, Map<String, String>> getData() {
+		return data;
 	}
-	public Map<String, String> getNodeMap() {
-		return nodeMap;
-	}
-	public void setNodeMap(Map<String, String> nodeMap) {
-		this.nodeMap = nodeMap;
-	}
-	public String getClassStr() {
-		return classStr;
-	}
-	public void setClassStr(String classStr) {
-		this.classStr = classStr;
-	}
+	
 }
 
-
-
-
-
-/*
-标准物品配置文件格式如下
-
-物品id (String)
-  -物品名 (String)
-  -物品材质 (MATERIAL)*
-  -物品描述 (List(String))
-  -物品标签 (Node)
-    -标签1:值
-    -标签2:值
-  -物品分类 (String)
-Item1:
-  material: minecraft:stone
-  name: TestItem1
-  lore:
-  - Lore1
-  - Lore2
-  tag:
-    key1:value
-    key2:value
-  class: dev
-  
-	
-
-*/
