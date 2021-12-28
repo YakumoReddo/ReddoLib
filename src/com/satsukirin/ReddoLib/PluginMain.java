@@ -1,5 +1,6 @@
 package com.satsukirin.ReddoLib;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.satsukirin.ReddoLib.Command.ReddoLibCommands;
@@ -34,5 +35,8 @@ public class PluginMain extends JavaPlugin {
 	}
 	public static ItemManager getItemManager() {
 		return ItemManager.getInstance();
+	}
+	public static NamespacedKey getNamespacedKey(String key) {
+		return new NamespacedKey(instance, key);
 	}
 }
