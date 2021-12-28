@@ -48,7 +48,24 @@ public class ItemBuilder {
 	}
 	
 	public ItemBuilder(ConfigurationSection section) {
-		
+		id=section.getName();
+		name=section.getString("name");
+		material=Material.valueOf(section.getString("material"));
+		if(section.contains("lore")) {
+			lores=section.getStringList("lore");
+		}
+		if(section.contains("data")) {
+			ConfigurationSection dataSection = section.getConfigurationSection("data");
+			for(String key : dataSection.getKeys(false)) {
+				ConfigurationSection csec = dataSection.getConfigurationSection(key);
+				Map<String, String> tmpMap = new HashMap<String, String>();
+				for(String ckey:csec.getKeys(false)) {
+					tmpMap.put(ckey, csec.getString(ckey));
+				}
+				data.put(key, tmpMap);
+			}
+		}
+		changed=true;
 	}
 	
 	//rebuild itemstack instance into tempitem
