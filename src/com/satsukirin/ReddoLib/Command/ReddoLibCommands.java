@@ -34,7 +34,7 @@ public class ReddoLibCommands implements TabExecutor {
 				return Arrays.stream(l1itemcmd).filter(s -> s.startsWith(args[0])).collect(Collectors.toList());
 			}
 			if(!args[1].equalsIgnoreCase("list") && args.length==3) {
-				return Arrays.stream((String[])ItemManager.getInstance().getIdSet().toArray()).filter(s -> s.startsWith(args[0])).collect(Collectors.toList());
+				return Arrays.stream(ItemManager.getInstance().getIdSet().toArray(new String[ItemManager.getInstance().getIdSet().size()])).filter(s -> s.startsWith(args[0])).collect(Collectors.toList());
 			}
 		}
 		return null;

@@ -16,6 +16,9 @@ public class PluginMain extends JavaPlugin {
 		PluginMain.instance=this;
 		//Create Logger
 		logger=new ReddoLogger();
+		
+		new ItemManager();
+		
 		//create command executor
 		ReddoLibCommands rlc = new ReddoLibCommands();
 		this.getCommand("rl").setExecutor(rlc);

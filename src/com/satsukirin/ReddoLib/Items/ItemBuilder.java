@@ -54,6 +54,7 @@ public class ItemBuilder {
 		if(section.contains("lore")) {
 			lores=section.getStringList("lore");
 		}
+		data=new HashMap<String, Map<String,String>>();
 		if(section.contains("data")) {
 			ConfigurationSection dataSection = section.getConfigurationSection("data");
 			for(String key : dataSection.getKeys(false)) {
@@ -87,7 +88,7 @@ public class ItemBuilder {
 			pdcdata.set(new NamespacedKey(PluginMain.getInstance(), key),PersistentDataType.TAG_CONTAINER,pdc);
 			
 		}
-		meta.getPersistentDataContainer().set(new NamespacedKey(PluginMain.getInstance(), "data"), PersistentDataType.TAG_CONTAINER, null);
+		meta.getPersistentDataContainer().set(new NamespacedKey(PluginMain.getInstance(), "data"), PersistentDataType.TAG_CONTAINER, pdcdata);
 		tempitem.setItemMeta(meta);
 		changed=false;
 	}
