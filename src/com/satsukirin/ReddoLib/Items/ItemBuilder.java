@@ -127,6 +127,12 @@ public class ItemBuilder {
 	public Map<String, Map<String, String>> getData() {
 		return data;
 	}
+	public Map<String, String> getExtendData(String extend){
+		return data.get(extend);
+	}
+	public String getExtendDataValue(String extend,String key) {
+		return data.get(extend).get(key);
+	}
 	
 }
 
