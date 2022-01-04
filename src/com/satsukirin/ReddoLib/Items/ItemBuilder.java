@@ -132,7 +132,12 @@ public class ItemBuilder {
 		return data.get(extend);
 	}
 	public String getExtendDataValue(String extend,String key) {
+		
 		return data.get(extend).get(key);
+	}
+	@Override
+	public int hashCode() {
+		return id.hashCode();
 	}
 	
 }
