@@ -14,7 +14,7 @@ public class TableBuilder {
 	//item id default "UnnamedItem%s"%HHmmss(Time)
 	private String id;
 	private ChanceModel<String> chanceModel;
-	
+	///TODO change chanceModel's String id into table's object id, restore extend and other infos in table's object
 	
 	
 	
