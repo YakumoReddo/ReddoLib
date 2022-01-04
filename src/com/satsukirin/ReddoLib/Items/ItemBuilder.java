@@ -75,6 +75,7 @@ public class ItemBuilder {
 		ItemMeta meta = tempitem.getItemMeta();
 		meta.setDisplayName(name);
 		meta.setLore(lores);
+		meta.getPersistentDataContainer().set(PluginMain.getNamespacedKey("ItemID"), PersistentDataType.STRING, this.id);
 		//create data pdc to storage extend pdc
 		PersistentDataContainer pdcdata = meta.getPersistentDataContainer().getAdapterContext().newPersistentDataContainer();
 		for(String key : data.keySet()) {
