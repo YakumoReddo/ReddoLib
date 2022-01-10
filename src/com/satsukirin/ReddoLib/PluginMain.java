@@ -6,11 +6,18 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.satsukirin.ReddoLib.Command.ReddoLibCommands;
 import com.satsukirin.ReddoLib.Items.ItemManager;
 import com.satsukirin.ReddoLib.Logger.ReddoLogger;
+import com.satsukirin.ReddoLib.Tables.TableManager;
 
 public class PluginMain extends JavaPlugin {
 	
 	private static PluginMain instance;
 	private ReddoLogger logger;
+	
+	/*
+	 * GitHub ssh:
+	 * git@github.com:YakumoReddo/ReddoLib.git
+	 */
+	
 	
 	@Override
 	public void onEnable() {
@@ -19,6 +26,7 @@ public class PluginMain extends JavaPlugin {
 		logger=new ReddoLogger();
 		
 		new ItemManager();
+		new TableManager();
 		
 		//create command executor
 		ReddoLibCommands rlc = new ReddoLibCommands();

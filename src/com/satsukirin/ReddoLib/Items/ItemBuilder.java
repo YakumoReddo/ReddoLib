@@ -34,6 +34,8 @@ public class ItemBuilder {
 	//if item changed simply after the last rebuild
 	private boolean changed;
 	
+	private int amount;
+	
 	//itemstack instance
 	private ItemStack tempitem;
 	
@@ -42,12 +44,14 @@ public class ItemBuilder {
 		id="UnnamedItem"+(new SimpleDateFormat("HHmmss")).format(new Date());
 		name=id;
 		material = Material.GRASS_BLOCK;
+		amount=0;
 		lores=new ArrayList<String>();
 		data=new HashMap<String, Map<String,String>>();
 		changed=true;
 	}
 	
 	public ItemBuilder(ConfigurationSection section) {
+		amount=1;
 		id=section.getName();
 		name=section.getString("name");
 		material=Material.valueOf(section.getString("material"));
@@ -91,6 +95,7 @@ public class ItemBuilder {
 		}
 		meta.getPersistentDataContainer().set(new NamespacedKey(PluginMain.getInstance(), "data"), PersistentDataType.TAG_CONTAINER, pdcdata);
 		tempitem.setItemMeta(meta);
+		tempitem.setAmount(amount);
 		changed=false;
 	}
 	
